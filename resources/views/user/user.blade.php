@@ -22,11 +22,21 @@
     <link rel="stylesheet" href="assets/css/lightbox.css">
     <!--
 
+
 TemplateMo 569 Edu Meeting
 
-https://templatemo.com/tm-569-edu-meeting
+https://templatemo.com/tm-569-edu-meeting-->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J2G4XHSNR4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
--->
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-J2G4XHSNR4');
+    </script>
 </head>
 
 <body>
@@ -356,6 +366,29 @@ https://templatemo.com/tm-569-edu-meeting
                                                 <textarea name="message" type="text" class="form-control" id="message" placeholder="YOUR MESSAGE..." required=""></textarea>
                                             </fieldset>
                                         </div>
+
+                                        <div class="captcha mb-2">
+                                            <span id="captcha-img"><img src="{{ route('captcha', ['config' => 'flat']) }}" id="captchaImage"></span>
+
+                                            <style>
+                                                img {
+                                                    width: 200px;
+                                                    /* lebar baru */
+                                                    height: 36px;
+                                                    /* tinggi baru */
+                                                    object-fit: contain;
+                                                    /* supaya proporsional */
+                                                }
+                                            </style>
+
+                                        </div>
+
+                                        <input type="text" name="captcha" class="form-control mt-2" placeholder="Masukkan captcha" required>
+
+                                        @error('captcha')
+                                        <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+
                                         <div class="col-lg-12">
                                             <fieldset>
                                                 <button type="submit" id="form-submit" class="button">SEND MESSAGE NOW</button>
@@ -375,6 +408,19 @@ https://templatemo.com/tm-569-edu-meeting
 
     <!-- Scripts -->
     <!-- Bootstrap core JavaScript -->
+
+    <script>
+        function refreshCaptcha() {
+            fetch('/refresh-captcha')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('captcha-img').innerHTML = data.captcha;
+                });
+        }
+
+        setInterval(refreshCaptcha, 120000); // 60 detik
+    </script>
+
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -443,6 +489,7 @@ https://templatemo.com/tm-569-edu-meeting
             }
         }, 2000);
     </script>
+
 
 </body>
 

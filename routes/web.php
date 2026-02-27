@@ -13,7 +13,21 @@ use App\Http\Controllers\JoinController;
 use App\Http\Controllers\LoginjoinController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use Mews\Captcha\Facades\Captcha;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Mews\Captcha\CaptchaController;
 
+// Route default mews/captcha
+Route::get('captcha/{config?}', [CaptchaController::class, 'getCaptcha'])->name('captcha');
+Route::get('/captcha-test', function () {
+    return view('captcha-test');
+});
+
+// Optional: refresh captcha via ajax
+Route::get('/refresh-captcha', function () {
+    return response()->json(['captcha' => captcha_img('flat')]);
+});
 /*
 |--------------------------------------------------------------------------
 | ROUTE PUBLIK (GUEST BOLEH)
@@ -379,11 +393,12 @@ route::get('/card/destroy/{id}', [CardController::class, 'destroy'])
 */
 route::get('/form/user', [FormController::class, 'show'])
     ->name('form.user');
-
+Route::get('refresh/captcha', [FormController::class, 'refreshCaptcha'])->name('refresh.captcha');
 // create
 route::get('/form/create', [FormController::class, 'create'])
     ->name('form-create');
 route::post('/form/store', [FormController::class, 'store'])
+    ->middleware('throttle:5,1')
     ->name('form-store');
 // end create
 

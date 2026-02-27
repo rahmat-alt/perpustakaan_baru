@@ -33,7 +33,15 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'captcha' => 'required|captcha',  // <- validasi captcha
+        ], [
+            'captcha.captcha' => 'Kode captcha salah!'
         ]);
+        if (!captcha_check($request->captcha)) {
+            return redirect()->back()
+                ->withErrors(['captcha' => 'Captcha tidak sesuai!'])
+                ->withInput();
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -46,6 +54,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('user.user', absolute: false));
+        return redirect(route('user.user', absolute: false))->with('success', 'Berhasil mendaftar!');
     }
 }

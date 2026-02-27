@@ -24,24 +24,32 @@ class AuthenticatedSessionController extends Controller
      */
 
     public function store(Request $request)
-
     {
-        $credentials = $request->validate([
+        // Validasi email, password dan captcha
+        $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
+            'captcha' => ['required'],
+        ], [
+            'captcha.required' => 'Kode captcha wajib diisi!',
         ]);
 
+        // Cek captcha secara manual
+        if (!captcha_check($request->captcha)) {
+            return back()
+                ->withErrors(['captcha' => 'Captcha tidak sesuai!'])
+                ->withInput();
+        }
+
+        // Ambil hanya email & password untuk login
+        $credentials = $request->only('email', 'password');
+
+        // Lakukan login
         if (Auth::attempt($credentials)) {
-
             $request->session()->regenerate();
-
             $user = Auth::user();
 
-            if ($user->role === 'admin') {
-                return redirect('/content'); // admin
-            }
-
-            return redirect('/user'); // user
+            return $user->role === 'admin' ? redirect('/content') : redirect('/user');
         }
 
         return back()->withErrors([

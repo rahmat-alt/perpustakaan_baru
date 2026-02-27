@@ -24,7 +24,26 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
+        <div class="captcha mt-2 mb-2">
+            <span id="captcha-img"><img src="{{ route('captcha', ['config' => 'flat']) }}" id="captchaImage"></span>
 
+            <style>
+                img {
+                    width: 200px;
+                    /* lebar baru */
+                    height: 36px;
+                    /* tinggi baru */
+                    object-fit: contain;
+                    /* supaya proporsional */
+                }
+            </style>
+
+            <input type="text" name="captcha" class="form-control mt-2 w-full rounded" placeholder="Masukkan captcha" autofocus required>
+        </div>
+
+        @error('captcha')
+        <small class="text-danger">{{ $message }}</small>
+        @enderror
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
@@ -45,4 +64,16 @@
             </x-primary-button>
         </div>
     </form>
+
+    <script>
+        function refreshCaptcha() {
+            fetch('/refresh-captcha')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('captcha-img').innerHTML = data.captcha;
+                });
+        }
+
+        setInterval(refreshCaptcha, 120000); // 60 detik
+    </script>
 </x-guest-layout>
