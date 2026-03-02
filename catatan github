@@ -1,0 +1,34 @@
+| Perintah                      | Fungsi Singkat                                  | Contoh Penggunaan                                        |
+| ----------------------------- | ----------------------------------------------- | -------------------------------------------------------- |
+| `git init`                    | Membuat repositori Git baru di folder lokal     | `git init`                                               |
+| `git clone <url>`             | Meng-copy repo dari GitHub ke lokal             | `git clone https://github.com/user/repo.git`             |
+| `git status`                  | Cek status file, ada yang berubah/tidak         | `git status`                                             |
+| `git add <file>`              | Menambahkan file ke staging area (siap commit)  | `git add .` (semua file)                                 |
+| `git commit -m "pesan"`       | Commit perubahan dengan pesan                   | `git commit -m "Fix bug form validation"`                |
+| `git branch`                  | Cek daftar branch lokal                         | `git branch`                                             |
+| `git branch -M main`          | Ganti nama branch (contoh: jadi main)           | `git branch -M main`                                     |
+| `git remote add origin <url>` | Hubungkan repo lokal dengan GitHub remote       | `git remote add origin https://github.com/user/repo.git` |
+| `git remote -v`               | Cek URL remote                                  | `git remote -v`                                          |
+| `git push -u origin main`     | Push branch lokal `main` ke remote `origin`     | `git push -u origin main`                                |
+| `git pull origin main`        | Ambil perubahan terbaru dari remote branch main | `git pull origin main`                                   |
+| `git log`                     | Melihat daftar commit                           | `git log`                                                |
+| `git diff`                    | Lihat perbedaan file yang belum di-commit       | `git diff`                                               |
+| `git checkout <branch>`       | Berpindah ke branch lain                        | `git checkout develop`                                   |
+
+Contoh urutan kerja dengan Git & GitHub di proyek Laravel
+cd path/ke/proyek-laravel
+
+git init
+git add .
+git commit -m "Initial commit"
+
+git branch -M main
+
+git remote add origin https://github.com/username/repo.git
+
+git push -u origin main
+
+Setelah push pertama, cukup:
+git add .
+git commit -m "pesan update"
+git push
