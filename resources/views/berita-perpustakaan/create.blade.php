@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h3>Tambah Berita</h3>
+    <h3> Berita</h3>
 
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -31,12 +31,13 @@
         <select name="status" class="form-control mb-2">
             <option value="">Pilih status</option>
             <option value="draft">Draft</option>
-            <option value="publish">Publish</option>
+
         </select>
 
         <input type="file" name="gambar" class="form-control mb-3">
 
         <button class="btn btn-primary">Simpan</button>
     </form>
+
 </div>
 @endsection
